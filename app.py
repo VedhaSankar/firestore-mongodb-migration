@@ -2,12 +2,23 @@ from time import sleep
 from google.cloud import firestore
 from dotenv import load_dotenv
 import os
+import pymongo
+import json
+from pymongo import MongoClient, InsertOne
 
 from sqlalchemy import all_
 
 load_dotenv()
 
 FILE_PATH = os.environ.get('FILE_PATH')
+MONGO_URI = os.environ.get('MONGO_URI')
+DATABASE = 'firestore-data'
+COLLECTION = 'firestore-data'
+
+
+client = MongoClient(MONGO_URI) 
+DB_NAME = 'firestore-data'
+database = client[DB_NAME]
 
 def get_collection():
     db = firestore.Client()
@@ -39,12 +50,23 @@ def get_collection():
 
 def transfer_to_mongo():
 
-    pass
+    result = get_collection()
+    collection_name = 'data'
+    new_collection = database[collection_name]
+    data = {}
+
+    for one in result:
+        data[one] = result[one] 
+        # print (data)
+    x = new_collection.insert_one(data)
+    print(x)
+
 
 def main():
 
     os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = FILE_PATH
-    get_collection()
+    # get_collection()
+    transfer_to_mongo()
 
 if __name__=='__main__':
     main()
