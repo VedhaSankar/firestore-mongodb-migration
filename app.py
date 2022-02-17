@@ -1,12 +1,7 @@
-from time import sleep
 from google.cloud import firestore
 from dotenv import load_dotenv
 import os
-import pymongo
-import json
-from pymongo import MongoClient, InsertOne
-
-from sqlalchemy import all_
+from pymongo import MongoClient
 
 load_dotenv()
 
